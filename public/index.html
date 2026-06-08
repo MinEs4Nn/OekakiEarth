@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oekaki Earth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="sky-glow"></div>
+    <header>
+      <h1>Oekaki Earth</h1>
+      <p>32x32の動物を描くと、LLMが能力と環境イベントを決めるオンライン生態系へ。</p>
+    </header>
+
+    <main>
+      <div id="adminUnlockModal" class="admin-unlock-modal" hidden>
+        <div class="admin-unlock-card">
+          <h2>管理者パネル</h2>
+          <p>管理者パスワードを入力してください。`Ctrl + Shift + A` でも開けます。</p>
+          <div class="auth-row">
+            <input id="adminPasswordInput" type="password" maxlength="64" placeholder="管理者パスワード" />
+            <button id="unlockAdminBtn">開く</button>
+            <button id="closeAdminUnlockBtn">閉じる</button>
+          </div>
+          <p id="adminUnlockMessage" class="message"></p>
+        </div>
+      </div>
+
+      <section class="panel auth-panel">
+        <h2>アカウント</h2>
+        <div class="auth-row">
+          <input id="usernameInput" type="text" maxlength="24" placeholder="ユーザー名" />
+          <input id="passwordInput" type="password" maxlength="48" placeholder="パスワード" />
+          <button id="registerBtn">新規登録</button>
+          <button id="loginBtn">ログイン</button>
+          <button id="logoutBtn">ログアウト</button>
+        </div>
+        <p id="authStatus" class="message"></p>
+      </section>
+
+      <section class="panel admin-panel" id="adminPanel" hidden>
+        <h2>管理者パネル</h2>
+        <div class="admin-summary" id="adminSummary"></div>
+        <div class="auth-row">
+          <button id="closeAdminBtn">パネルを閉じる</button>
+          <button id="refreshAdminBtn">ユーザー一覧を更新</button>
+          <button id="regenerateWorldBtn">世界シードを再生成</button>
+        </div>
+        <div class="admin-password-box">
+          <h3>管理者パスワード変更</h3>
+          <div class="auth-row">
+            <input id="adminCurrentPasswordInput" type="password" maxlength="64" placeholder="現在の管理者パスワード" />
+            <input id="adminNewPasswordInput" type="password" maxlength="64" placeholder="新しいパスワード" />
+            <input id="adminConfirmPasswordInput" type="password" maxlength="64" placeholder="新しいパスワード（確認）" />
+            <button id="changeAdminPasswordBtn">変更を保存</button>
+          </div>
+          <p id="adminPasswordMessage" class="message"></p>
+        </div>
+        <h3>ユーザー</h3>
+        <div id="adminUsersList" class="admin-users"></div>
+        <h3>生物</h3>
+        <div id="adminSpeciesList" class="admin-manage-list"></div>
+        <h3>生態系</h3>
+        <div id="adminEcosystemsList" class="admin-manage-list"></div>
+      </section>
+
+      <section class="panel draw-panel">
+        <h2>1. 動物を描く</h2>
+        <div class="draw-wrap">
+          <canvas id="spriteCanvas" width="32" height="32" aria-label="32x32 sprite buffer"></canvas>
+          <canvas id="editorCanvas" width="512" height="512" aria-label="32x32 drawing editor"></canvas>
+        </div>
+
+        <div class="toolbar">
+          <label>
+            色
+            <input id="colorPicker" type="color" value="#ffcf5a" />
+          </label>
+          <div id="palette" class="palette"></div>
+          <button id="penBtn" class="active">ペン</button>
+          <button id="eraserBtn">消しゴム</button>
+          <button id="fillBtn">塗りつぶし</button>
+          <button id="clearBtn">クリア</button>
+        </div>
+
+        <div class="register-row">
+          <input id="animalName" type="text" maxlength="24" placeholder="動物名 (例: ぽよオオカミ)" />
+          <button id="spawnBtn">AI解析して生態系へ追加</button>
+        </div>
+        <p id="message" class="message"></p>
+      </section>
+
+      <section class="panel status-panel">
+        <h2>2. 生存個体 / 絶滅リスト</h2>
+        <h3>生きている生物</h3>
+        <div id="speciesList" class="species-list"></div>
+        <h3>絶滅した生物</h3>
+        <div id="extinctList" class="extinct-list"></div>
+      </section>
+
+      <section class="panel sim-panel">
+        <h2>3. 自律生態系シミュレーション</h2>
+        <div class="world-toolbar">
+          <span id="zoomLabel">Zoom: 1.00x</span>
+          <button id="resetViewBtn">表示をリセット</button>
+        </div>
+        <canvas id="worldCanvas" width="1000" height="500" aria-label="ecosystem simulation"></canvas>
+
+        <div class="env-grid" id="envGrid"></div>
+        <div class="sim-controls">
+          <button id="toggleSimBtn">停止</button>
+          <button id="saveWorldBtn">この生態系を公開投稿</button>
+          <span id="tickLabel">Tick: 0</span>
+          <span id="populationLabel">Population: 0</span>
+        </div>
+
+        <div id="eventLog" class="event-log"></div>
+      </section>
+
+      <section class="panel gallery-panel">
+        <h2>4. 公開生態系ギャラリー</h2>
+        <button id="refreshGalleryBtn">最新を読み込む</button>
+        <div id="galleryList" class="gallery-list"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
