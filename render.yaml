@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: oekaki-earth
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: OPENAI_MODEL
+        value: gpt-4.1
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /var/data/oekaki-earth.db
+      - key: PORT
+        value: 10000
+      - key: OPENAI_API_KEY
+        sync: false
+    disk:
+      name: oekaki-earth-data
+      mountPath: /var/data
+      sizeGB: 1

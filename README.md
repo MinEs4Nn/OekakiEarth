@@ -50,3 +50,31 @@ npm start
 
 - `OPENAI_API_KEY` 未設定時はローカルフォールバック推論で動作します。
 - 開発用としてSQLiteファイル `oekaki-earth.db` がルートに作成されます。
+
+## 公開方法
+
+このアプリは Express + SQLite を使うため、GitHub Pages ではなく Node.js サーバーを動かせるサービスで公開してください。
+
+### Render で公開
+
+このリポジトリには [render.yaml](render.yaml) を含めてあるので、そのまま Blueprint デプロイできます。
+
+1. Render にログイン
+2. New から Blueprint を選択
+3. GitHub リポジトリ `MinEs4Nn/OekakiEarth` を接続
+4. `OPENAI_API_KEY` を設定
+5. デプロイを実行
+
+設定済み項目:
+
+- `npm install` でビルド
+- `npm start` で起動
+- `/api/health` でヘルスチェック
+- SQLite 保存先を `/var/data/oekaki-earth.db` に設定
+- 永続ディスク `/var/data` を使用
+
+### 公開後に確認すること
+
+1. `/api/health` で `ok: true` を確認
+2. ユーザー登録とログインができるか確認
+3. 動物追加と公開生態系の保存ができるか確認
